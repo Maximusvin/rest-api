@@ -1,5 +1,5 @@
 const routersPath = {
-    CONTACTS: 'contacts',
+    CONTACTS: '/api/contacts',
 }
 
 module.exports = {
