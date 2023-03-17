@@ -61,7 +61,7 @@ const deleteContact = async (req, res, next) => {
 const updateContact = async (req, res, next) => {
     try {
         const {error} = createContactDataValidator(req.body);
-        const contact = await contactModel.getContactById(req.id);
+        const contact = await contactModel.getContactById(req.params.id);
 
         if (error) return next(new AppError(400, `missing fields`));
 
