@@ -76,10 +76,30 @@ const updateContact = async (req, res, next) => {
     }
 }
 
+const updateStatusContact = async (req, res, next) => {
+    try {
+        if (req.body.favorite) {
+            return res.status(400).json({message: "missing field favorite"});
+        }
+
+        const updatedContact = await Contact.findByIdAndUpdate(req.params.id, req.body, {new: true});
+
+        if (!updatedContact) {
+            return res.status(404).json({message: 'Contact not found'});
+        }
+
+        res.status(200).json(updatedContact);
+    } catch (err) {
+        next(err)
+    }
+}
+
+
 module.exports = {
     getContacts,
     getContactById,
     createContact,
     deleteContact,
     updateContact,
+    updateStatusContact,
 }
