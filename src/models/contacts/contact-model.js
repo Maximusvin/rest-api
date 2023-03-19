@@ -32,9 +32,9 @@ const schemas = {
     contactJoiSchema,
 }
 
-const Contact = model('contact', contactSchema);
+const ContactModel = model('contact', contactSchema);
 
 module.exports = {
-    Contact,
+    Contact: ContactModel,
     schemas,
 };

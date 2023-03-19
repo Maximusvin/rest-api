@@ -1,6 +1,6 @@
 const {createContactDataValidator} = require("../utils/contactValidator");
 const {AppError} = require("../utils");
-const {Contact} = require('../models/contacts/contact');
+const {Contact} = require('../models/contacts/contact-model');
 
 const getContacts = async (req, res, next) => {
     try {
@@ -78,7 +78,9 @@ const updateContact = async (req, res, next) => {
 
 const updateStatusContact = async (req, res, next) => {
     try {
-        if (req.body.favorite) {
+        const key = 'favorite';
+
+        if (!(key in req.body)) {
             return res.status(400).json({message: "missing field favorite"});
         }
 
@@ -93,7 +95,6 @@ const updateStatusContact = async (req, res, next) => {
         next(err)
     }
 }
-
 
 module.exports = {
     getContacts,

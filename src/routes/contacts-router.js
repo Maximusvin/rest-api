@@ -7,16 +7,16 @@ const {
     createContact,
     deleteContact,
     updateContact,
-    updateStatusContact ,
+    updateStatusContact,
 } = require("../controllers/contact-controller");
 
-const router = Router();
+const contactRouter = Router();
 
-router.get('/', getContacts);
-router.get('/:id', isValidId, getContactById);
-router.post('/', createContact);
-router.delete('/:id', isValidId, deleteContact);
-router.put('/:id', isValidId, updateContact);
-router.patch('/:contactId', isValidId, updateStatusContact );
+contactRouter.get('/', getContacts);
+contactRouter.get('/:id', isValidId, getContactById);
+contactRouter.post('/', createContact);
+contactRouter.delete('/:id', isValidId, deleteContact);
+contactRouter.put('/:id', isValidId, updateContact);
+contactRouter.patch('/:id/favorite', updateStatusContact);
 
-module.exports = router;
+module.exports = contactRouter;
