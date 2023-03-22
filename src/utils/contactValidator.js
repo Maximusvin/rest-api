@@ -1,7 +1,3 @@
-const Joi = require("joi");
+const {schemas} = require("../models/contacts/contact-model");
 
-exports.createContactDataValidator = (data) => Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().required(),
-    phone: Joi.string().min(0).required(),
-}).validate(data);
+exports.createContactDataValidator = (data) => schemas.contactJoiSchema.validate(data);

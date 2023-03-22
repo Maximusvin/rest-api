@@ -3,8 +3,8 @@ const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 
-const contactsRouter = require('./routers/contacts-router');
-const {routersPath} = require("./routers/routers-path");
+const contactsRouter = require('./routes/contacts-router');
+const {routersPath} = require("./routes/routers-path");
 
 const app = express();
 const NODE_ENV = process.env.NODE_ENV;
@@ -15,7 +15,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use(`/api/${routersPath.CONTACTS}`, contactsRouter);
+app.use(routersPath.CONTACTS, contactsRouter);
 
 app.use((req, res) => {
     res.status(404).json({
