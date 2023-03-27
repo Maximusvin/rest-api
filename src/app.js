@@ -3,8 +3,9 @@ const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 
-const contactsRouter = require('./routes/contacts-router');
-const {routersPath} = require("./routes/routers-path");
+const contactsRouter = require('./routers/contacts-router');
+const authRouter = require('./routers/auth-router');
+const {routersPath} = require("./routers/routers-path");
 
 const app = express();
 const NODE_ENV = process.env.NODE_ENV;
@@ -15,6 +16,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use(routersPath.USERS, authRouter);
 app.use(routersPath.CONTACTS, contactsRouter);
 
 app.use((req, res) => {
@@ -23,7 +25,7 @@ app.use((req, res) => {
     });
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     res.status(err.status || 500).json({
         message: err.message || 'Server error',
     });

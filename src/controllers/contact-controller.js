@@ -1,11 +1,24 @@
-const {createContactDataValidator} = require("../utils/contactValidator");
-const {AppError} = require("../utils");
+const {createContactDataValidator} = require("../utils/validators");
+const {AppErrors} = require("../utils/errors");
 const {Contact} = require('../models/contacts/contact-model');
 
 const getContacts = async (req, res, next) => {
     try {
-        const contacts = await Contact.find({}, "name email phone favorite");
-        res.status(200).json(contacts);
+        const {favorite, page, limit} = req.query;
+
+        const paginationPage = +page || 1;
+        const paginationLimit = +limit || 5;
+        const skip = (paginationPage - 1) * paginationLimit;
+        const findOptional = favorite ? {favorite} : {};
+
+        const total = await Contact.count();
+        const contacts = await Contact.find(findOptional, "name email phone favorite").skip(skip).limit(paginationLimit);
+
+        res.status(200).json({
+            contacts,
+            count: contacts.length,
+            total,
+        });
     } catch (err) {
         next(err);
     }
@@ -16,7 +29,7 @@ const getContactById = async (req, res, next) => {
         const {id} = req.params;
         const contact = await Contact.findById(id);
 
-        if (!contact) return next(new AppError(404, `Contact with id=${id} not found!`));
+        if (!contact) return next(new AppErrors(404, `Contact with id=${id} not found!`));
 
         res.status(200).json(contact);
     } catch (err) {
@@ -49,7 +62,7 @@ const deleteContact = async (req, res, next) => {
 
         const contact = await Contact.findByIdAndDelete(id);
 
-        if (!contact) return next(new AppError(404, `Contact with id=${id} not found!`));
+        if (!contact) return next(new AppErrors(404, `Contact with id=${id} not found!`));
 
         res.status(200).json({message: 'Contact deleted'});
     } catch (err) {
@@ -62,7 +75,7 @@ const updateContact = async (req, res, next) => {
         const {id} = req.params;
         const {error} = createContactDataValidator(req.body);
 
-        if (error) return next(new AppError(400, `missing fields`));
+        if (error) return next(new AppErrors(400, `missing fields`));
 
         const updatedContact = await Contact.findByIdAndUpdate(id, req.body, {new: true});
 
