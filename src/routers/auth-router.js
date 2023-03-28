@@ -17,7 +17,7 @@ const authRouter = Router();
 authRouter.post('/register', checkSignupUserData, registrationController);
 authRouter.post('/login', checkLoginUserData, loginController);
 authRouter.post('/logout', checkJwt, logoutController);
-authRouter.post('/current', checkJwt, getCurrentUserController);
+authRouter.get('/current', checkJwt, getCurrentUserController);
 authRouter.patch('/', checkJwt, updateSubscriptionUser);
 
 module.exports = authRouter;
