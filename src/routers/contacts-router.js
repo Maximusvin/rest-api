@@ -1,6 +1,8 @@
 const {Router} = require('express');
 
-const {isValidId} = require("../middlewares");
+const {isValidId} = require("../middlewares/isValidId");
+const {checkJwt} = require("../middlewares/authMiddleware");
+
 const {
     getContacts,
     getContactById,
@@ -12,7 +14,7 @@ const {
 
 const contactRouter = Router();
 
-contactRouter.get('/', getContacts);
+contactRouter.get('/', checkJwt, getContacts);
 contactRouter.get('/:id', isValidId, getContactById);
 contactRouter.post('/', createContact);
 contactRouter.delete('/:id', isValidId, deleteContact);

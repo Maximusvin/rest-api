@@ -6,6 +6,7 @@ const {PORT = 3000, MONGO_URL} = process.env;
 const runServer = async () => {
     try {
         await connect(MONGO_URL);
+
         app.listen(PORT, () => {
             console.log(`Server running. Use our API on port: ${PORT}`);
         })
